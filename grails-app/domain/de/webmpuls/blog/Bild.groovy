@@ -50,7 +50,7 @@ class Bild
 
 	public boolean exists()
 	{
-		String tmpFilePath = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getBigURL()}"
+		String tmpFilePath = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getURL()}"
 		boolean exists = ApplicationHolder.getApplication().getMainContext().getResource(tmpFilePath).getFile().exists()
 		println("File '${tmpFilePath}' does${exists ? '' : ' not'} exist")
 		return exists

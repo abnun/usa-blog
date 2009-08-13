@@ -51,7 +51,9 @@
 
 													%>
 													<g:if test="${albumBilder && !albumBilder.isEmpty()}">
-														<img src="${wm_media.mediaPath(albumId: albumInstance.id)}${titelBild.getThumbNailURL()}" alt="${titelBild.baseName}"/>
+														<g:if test="${titelBild.exists()}">
+															<img src="${wm_media.mediaPath(albumId: albumInstance.id)}${titelBild.getThumbNailURL()}" alt="${titelBild.baseName}"/>
+														</g:if>
 													</g:if>
 
 													<g:else>
