@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest
 import org.springframework.web.multipart.MultipartFile
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import de.webmpuls.blog.Media.MediaUtils
-import grails.util.Environment
+import grails.util.GrailsUtil
 
 class BildController
 {
@@ -249,7 +249,7 @@ class BildController
 		//@todo Need os specific code here... Remove c for Linux.....
 		def cmd = ['cmd', '/c', 'convert', inpath, action, options, outpath]
 
-		if(Environment.current == "production")
+		if(GrailsUtil.environment == "production")
 		{
 			cmd = ['convert', inpath, action, options, outpath]
 		}
