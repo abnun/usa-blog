@@ -1,4 +1,5 @@
 import grails.util.BuildSettingsHolder
+import grails.util.BuildSettings
 
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
@@ -75,8 +76,8 @@ fckeditor
 {
     upload
 	{
-        basedir = "${BuildSettingsHolder.settings.baseDir}/tmp/storagearea/"
-        baseurl = "${BuildSettingsHolder.settings.baseDir}/uploads/"
+        basedir = "./tmp/storagearea/"
+        baseurl = "./uploads/"
         overwrite = false
         link
 		{

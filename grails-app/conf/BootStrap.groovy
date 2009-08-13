@@ -4,6 +4,7 @@ import de.webmpuls.blog.JsecUser
 import de.webmpuls.blog.JsecUserRoleRel
 import de.webmpuls.blog.Post
 import de.webmpuls.blog.Sex
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class BootStrap
 {
@@ -61,6 +62,10 @@ class BootStrap
 						Urlaubsfotos einstellen. <br/><br/>Viel Spaß beim Lesen, Anschauen und Kommentieren! :-)''',
 						verfasser: adminUser1).save(flush: true)
 			}
+
+			println("###########################")
+			println("###########################")
+			println(ConfigurationHolder.getConfig().flatten().toMapString())
 	}
 	def destroy =
 	{
