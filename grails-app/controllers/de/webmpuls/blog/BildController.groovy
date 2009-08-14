@@ -196,6 +196,7 @@ class BildController
 				}
 
 				response.sendError(200, 'Foto erfolgreich geladen.');
+				render "1"
 			}
 			else
 			{
