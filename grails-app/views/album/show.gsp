@@ -31,9 +31,14 @@
 											<img src='${wm_media.mediaPath(albumId: albumInstance.id)}${bildInstance.getThumbNailURL()}' alt='${bildInstance.baseName}'/>
 										</a>
 										<jsec:isLoggedIn>
-											<p class="meta" style="text-align: right;">
+											<g:form name="DeleteBildForm_${bildInstance.id}" method="post" url="${createLink(controller: 'bild', action: 'delete', params: [id: bildInstance.id, albumId: albumInstance.id])}"></g:form>
+											<p class="meta" style="text-align: center;">
+												<img src="${resource(dir: 'images/skin', file: 'database_delete.png')}" alt="Bild löschen"/>
+												<a href="javascript: void(0);" onclick="if(confirm('Wirklich löschen?')) { document.forms['DeleteBildForm_${bildInstance.id}'].submit();}">
+													<span style="text-align: left;">löschen</span>
+												</a>
 												<img src="${resource(dir: 'images/skin', file: 'database_edit.png')}" alt="Bild ändern" />
-												<g:link controller="bild" action="edit" id="${bildInstance.id}" params="[albumId: albumInstance.id]">
+												<g:link controller="bild" action="edit" params="[id: bildInstance.id, albumId: albumInstance.id]">
 													ändern
 												</g:link>
 											</p>

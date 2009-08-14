@@ -59,7 +59,7 @@
                                     
 <ul>
 <g:each var="b" in="${albumInstance?.bilder?}">
-    <li><g:link controller="bild" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
+    <li><g:link controller="bild" action="edit" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
 </g:each>
 </ul>
 <g:link controller="bild" params="['album.id':albumInstance?.id]" action="create">Bilder hinzufügen</g:link>

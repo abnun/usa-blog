@@ -1,10 +1,9 @@
-
 <%@ page import="de.webmpuls.blog.Bild; de.webmpuls.blog.Album" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Album Liste</title>
+        <title>Fotoalben anzeigen</title>
     </head>
     <body>
         <div class="body">
@@ -51,21 +50,23 @@
 
 													%>
 													<g:if test="${albumBilder && !albumBilder.isEmpty()}">
-														<g:if test="${titelBild.exists()}">
-															<img src="${wm_media.mediaPath(albumId: albumInstance.id)}${titelBild.getThumbNailURL()}" alt="${titelBild.baseName}"/>
-														</g:if>
+														<img src="${wm_media.mediaPath(albumId: albumInstance.id)}${titelBild.getThumbNailURL()}" alt="${titelBild.baseName}"/>
 													</g:if>
-
 													<g:else>
 														<img src="${resource(dir: 'images', file: 'nopicavailable.gif')}" alt="Kein Bild verfügbar"/>
 													</g:else>
 												</g:link>
 
 												<jsec:isLoggedIn>
-													<p class="meta" style="text-align: right;">
+													<g:form name="DeleteAlbumForm_${albumInstance.id}" method="post" controller="album" action="delete" id="${albumInstance.id}"></g:form>
+													<p class="meta" style="text-align: center;">
+														<img src="${resource(dir: 'images/skin', file: 'database_delete.png')}" alt="Album löschen" />
+														<a href="javascript: void(0);" onclick="if(confirm('Wirklich löschen?')) { document.forms['DeleteAlbumForm_${albumInstance.id}'].submit();}">
+															<span style="text-align: left;">löschen</span>
+														</a>
 														<img src="${resource(dir: 'images/skin', file: 'database_edit.png')}" alt="Album ändern" />
 														<g:link controller="album" action="edit" id="${albumInstance.id}">
-															ändern
+															<span style="text-align: right;">ändern</span>
 														</g:link>
 													</p>
 												</jsec:isLoggedIn>

@@ -46,7 +46,17 @@ class BildController
 			{
 				bildInstance.delete(flush: true)
 				flash.message = "Bild '${bildInstance.baseName}' gelöscht."
-				redirect(action: list)
+
+				if(params.albumId)
+				{
+					redirect(controller: 'album', action: 'show', id: params.albumId)
+					return false
+				}
+				else
+				{
+					redirect(action: list)
+					return false
+				}
 			}
 			catch (org.springframework.dao.DataIntegrityViolationException e)
 			{
@@ -196,10 +206,24 @@ class BildController
 	private void processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile)
 	{
 		final String original = fileName
-		def t = Thread.start
+		if(GrailsUtil.environment == "development")
 		{
+			original = "\"${original}\""
+		}
 
-			String cmd = createCmd("\"${original}\"", MediaUtils.THUMBNAIL, createDimentions(150, 140), "\"${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}\"")
+//		def t = Thread.start
+//		{
+
+			final String uploadPathThumbNail = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
+			final String uploadPathBig = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
+
+			if(GrailsUtil.environment == "development")
+			{
+				uploadPathThumbNail = "\"${uploadPathThumbNail}\""
+				uploadPathBig = "\"${uploadPathBig}\""
+			}
+
+			String cmd = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
 
 			try
 			{
@@ -211,7 +235,7 @@ class BildController
 				println(e.stackTrace)
 			}
 
-			String cmdMain = createCmd("\"${original}\"", MediaUtils.THUMBNAIL, createDimentions(400, 0), "\"${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}\"")
+			String cmdMain = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
 			try
 			{
 				def processMain = cmdMain.execute()
@@ -224,7 +248,7 @@ class BildController
 
 			//             def waterMarkCmd = ["cmd /c composite -compose atop watermark.png", 'imgs/main_' + fileName, 'imgs/wm_' + fileName]
 			//             waterMarkCmd.join(" ").execute()
-		}
+//		}
 	}
 
 	/*private String getExtension(MultipartFile file)
@@ -248,12 +272,6 @@ class BildController
 	{
 		//@todo Need os specific code here... Remove c for Linux.....
 		def cmd = ['cmd', '/c', 'convert', inpath, action, options, outpath]
-
-		if(GrailsUtil.environment == "production")
-		{
-			cmd = ['convert', inpath, action, options, outpath]
-		}
-
 		String execString = cmd.join(" ")
 		println execString
 		return execString;
