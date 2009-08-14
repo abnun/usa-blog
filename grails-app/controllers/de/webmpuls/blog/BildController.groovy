@@ -175,6 +175,12 @@ class BildController
 				if(newFile.exists() && newFile.size() > 0)
 				{
 					Bild newBild = new Bild(baseName: params['Filename'], album: Album.get(params.album.id))
+					Bild existingBild = Bild.findByBaseName(params['Filename'])
+					if(existingBild)
+					{
+						newBild = existingBild
+					}
+
 					if(newBild.save(flush: true))
 					{
 						println("Foto '${newBild.getURL()}' erfolgreich gespeichert.")
