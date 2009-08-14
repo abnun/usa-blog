@@ -272,6 +272,12 @@ class BildController
 	{
 		//@todo Need os specific code here... Remove c for Linux.....
 		def cmd = ['cmd', '/c', 'convert', inpath, action, options, outpath]
+
+		if(GrailsUtil.environment == "production")
+		{
+			cmd = ['convert', inpath, action, options, outpath]
+		}
+
 		String execString = cmd.join(" ")
 		println execString
 		return execString;
