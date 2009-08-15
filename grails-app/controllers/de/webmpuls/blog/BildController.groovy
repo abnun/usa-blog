@@ -170,9 +170,10 @@ class BildController
 
 				foto.transferTo(newFile)
 				Thread.sleep(2000) 
-				processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild)
 
-				if(newFile.exists() && newFile.size() > 0)
+				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild)
+
+				if(isOk && newFile.exists() && newFile.size() > 0)
 				{
 					Bild newBild = new Bild(baseName: params['Filename'], album: Album.get(params.album.id))
 					Bild existingBild = Bild.findByBaseName(params['Filename'])
@@ -193,10 +194,14 @@ class BildController
 						}
 						response.sendError(500, 'Foto konnte nicht geladen werden.');
 					}
+
+					response.sendError(200, 'Foto erfolgreich geladen.');
+				}
+				else
+				{
+					response.sendError(500, 'Foto konnte nicht geladen werden.');
 				}
 
-				response.sendError(200, 'Foto erfolgreich geladen.');
-				render "1"
 			}
 			else
 			{
@@ -210,7 +215,7 @@ class BildController
 		}
 	}
 
-	private void processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile)
+	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile)
 	{
 		final String original = fileName
 		if(GrailsUtil.environment == "development")
@@ -236,10 +241,12 @@ class BildController
 			{
 				def process = cmd.execute()
 				process.waitFor()
+				return true
 			}
 			catch(Exception e)
 			{
 				println(e.stackTrace)
+				return false
 			}
 
 			String cmdMain = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
@@ -247,10 +254,12 @@ class BildController
 			{
 				def processMain = cmdMain.execute()
 				processMain.waitFor()
+				return true
 			}
 			catch(Exception e)
 			{
 				println(e.stackTrace)
+				return false
 			}
 
 			//             def waterMarkCmd = ["cmd /c composite -compose atop watermark.png", 'imgs/main_' + fileName, 'imgs/wm_' + fileName]
