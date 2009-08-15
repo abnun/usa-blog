@@ -165,7 +165,7 @@ class BildController
 
 				Bild tmpBild = new Bild(baseName: params['Filename'], album: Album.get(params.album.id))
 
-				String newFilePath = "${uploadFolder}${File.separator}${tmpBild.getURL()}"
+				String newFilePath = "${uploadFolder}${File.separator}${tmpBild.getTempURL()}"
 
 				File newFile = new File(newFilePath)
 
@@ -244,13 +244,15 @@ class BildController
 //		def t = Thread.start
 //		{
 
-			final String uploadPathThumbNail = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
 			final String uploadPathBig = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
+			final String uploadPathNormal = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getURL()}"
+			final String uploadPathThumbNail = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
 
 			if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 			{
-				uploadPathThumbNail = "\"${uploadPathThumbNail}\""
 				uploadPathBig = "\"${uploadPathBig}\""
+				uploadPathNormal = "\"${uploadPathNormal}\""
+				uploadPathThumbNail = "\"${uploadPathThumbNail}\""
 			}
 
 			String cmdRotate = ""
@@ -261,13 +263,15 @@ class BildController
 			println "User -> ${System.getenv().get("USER")}"
 			println "Shell -> ${System.getenv().get("SHELL")}"
 
-			if(rotateDegrees)
+			if(rotateDegrees && new File(original).exists())
 			{
-				cmdRotate = "mogrify -rotate \"${rotateDegrees}\" ${original}"
+				cmdRotate = "convert -rotate ${rotateDegrees} ${original} ${uploadPathNormal}"
+				//cmdRotate = "convert -rotate \"${rotateDegrees}\" ${original} ${uploadPathNormal}"
 				println cmdRotate
 				try
 				{
 					process = cmdRotate.execute()
+					//println process.in.text
 					process.waitFor()
 					Thread.sleep(2000) 
 					isOk = true
@@ -278,11 +282,29 @@ class BildController
 					return false
 				}
 			}
+			else
+			{
+				cmdRotate = "cp ${original} ${uploadPathNormal}"
+				println cmdRotate
+				try
+				{
+					process = cmdRotate.execute()
+					//println process.in.text
+					process.waitFor()
+					Thread.sleep(2000)
+					isOk = true
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace()
+					return false
+				}
+			}
 
-			String cmd = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
+			String cmdThumbNail = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
 			try
 			{
-				process = cmd.execute()
+				process = cmdThumbNail.execute()
 				process.waitFor()
 				isOk = true
 			}
@@ -292,10 +314,10 @@ class BildController
 				return false
 			}
 
-			String cmdMain = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
+			String cmdBig = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
 			try
 			{
-				Process processMain = cmdMain.execute()
+				Process processMain = cmdBig.execute()
 				processMain.waitFor()
 				isOk = true
 			}

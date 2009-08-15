@@ -6,7 +6,7 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class Bild
 {
-	static transients = ['URL', 'thumbNailURL', 'bigURL', 'exists']
+	static transients = ['URL', 'thumbNailURL', 'bigURL', 'tempURL', 'exists']
 	
 	static belongsTo = [album: Album]
 
@@ -48,10 +48,20 @@ class Bild
 		return "${baseName}${MediaUtils.THUMBNAIL}${MediaUtils.SUFFIX}"
 	}
 
+	public String getTempURL()
+	{
+		return "${baseName}${MediaUtils.TEMP}${MediaUtils.SUFFIX}"
+	}
+
 	public boolean exists()
 	{
-		String tmpFilePath = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getBigURL()}"
-		boolean exists = ApplicationHolder.getApplication().getMainContext().getResource(tmpFilePath).getFile().exists()
+		String tmpFilePathBig = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getBigURL()}"
+		String tmpFilePathNormal = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getURL()}"
+		String tmpFilePathThumbNail = "${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${album.id}${File.separator}${getThumbNailURL()}"
+		boolean bigExists = ApplicationHolder.getApplication().getMainContext().getResource(tmpFilePathBig).getFile().exists()
+		boolean normalExists = ApplicationHolder.getApplication().getMainContext().getResource(tmpFilePathNormal).getFile().exists()
+		boolean thumbNailExists = ApplicationHolder.getApplication().getMainContext().getResource(tmpFilePathThumbNail).getFile().exists()
+		boolean exists = bigExists && normalExists && thumbNailExists
 		//println("File '${tmpFilePath}' does${exists ? '' : ' not'} exist")
 		return exists
 	}

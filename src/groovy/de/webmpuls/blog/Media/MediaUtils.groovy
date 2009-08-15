@@ -6,6 +6,7 @@ package de.webmpuls.blog.Media
  */
 class MediaUtils 
 {
+	public static final String TEMP = "-temp"
 	public static final String THUMBNAIL = "-thumbnail"
 	public static final String NORMAL = "-normal"
 	public static final String BIG = "-big"
