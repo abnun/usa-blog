@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import de.webmpuls.blog.Media.MediaUtils
 import grails.util.GrailsUtil
+import javax.servlet.http.HttpServletResponse
 
 class BildController
 {
@@ -171,7 +172,9 @@ class BildController
 				foto.transferTo(newFile)
 				Thread.sleep(2000) 
 
-				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild)
+				String rotateDegrees = params.rotate
+
+				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild, rotateDegrees)
 
 				if(isOk && newFile.exists() && newFile.size() > 0)
 				{
@@ -192,14 +195,24 @@ class BildController
 						{
 							println it
 						}
-						response.sendError(500, 'Foto konnte nicht geladen werden.');
+
+						//response.sendError(500, 'Foto konnte nicht geladen werden.');
+						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+						response.outputStream << "Foto konnte nicht geladen werden."
+						response.outputStream.flush()
 					}
 
-					response.sendError(200, 'Foto erfolgreich geladen.');
+					//response.sendError(200, 'Foto erfolgreich hochgeladen.');
+					response.setStatus(HttpServletResponse.SC_OK)
+					response.outputStream << "Foto erfolgreich hochgeladen."
+					response.outputStream.flush()
 				}
 				else
 				{
-					response.sendError(500, 'Foto konnte nicht geladen werden.');
+					//response.sendError(500, 'Foto konnte nicht geladen werden.');
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+					response.outputStream << "Foto konnte nicht geladen werden."
+					response.outputStream.flush()
 				}
 
 			}
@@ -211,60 +224,91 @@ class BildController
 		}
 		else
 		{
-			response.sendError(500, 'Foto konnte nicht geladen werden.');
+			//response.sendError(500, 'Foto konnte nicht geladen werden.');
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+			response.outputStream << "Foto konnte nicht geladen werden."
+			response.outputStream.flush()
 		}
 	}
 
-	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile)
+	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile, String rotateDegrees)
 	{
 		final String original = fileName
-		if(GrailsUtil.environment == "development")
+		println("OS -> ${System.getProperty("os.name")}")
+		if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 		{
 			original = "\"${original}\""
 		}
 
+		boolean isOk = false
 //		def t = Thread.start
 //		{
 
 			final String uploadPathThumbNail = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
 			final String uploadPathBig = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
 
-			if(GrailsUtil.environment == "development")
+			if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 			{
 				uploadPathThumbNail = "\"${uploadPathThumbNail}\""
 				uploadPathBig = "\"${uploadPathBig}\""
 			}
 
-			String cmd = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
+			String cmdRotate = ""
 
+			Process process = null
+
+			println "Env -> ${System.getenv().get("PATH")}"
+			println "User -> ${System.getenv().get("USER")}"
+			println "Shell -> ${System.getenv().get("SHELL")}"
+
+			if(rotateDegrees)
+			{
+				cmdRotate = "mogrify -rotate \"${rotateDegrees}\" ${original}"
+				println cmdRotate
+				try
+				{
+					process = cmdRotate.execute()
+					process.waitFor()
+					Thread.sleep(2000) 
+					isOk = true
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace()
+					return false
+				}
+			}
+
+			String cmd = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
 			try
 			{
-				def process = cmd.execute()
+				process = cmd.execute()
 				process.waitFor()
-				return true
+				isOk = true
 			}
 			catch(Exception e)
 			{
-				println(e.stackTrace)
+				e.printStackTrace()
 				return false
 			}
 
 			String cmdMain = createCmd(original, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
 			try
 			{
-				def processMain = cmdMain.execute()
+				Process processMain = cmdMain.execute()
 				processMain.waitFor()
-				return true
+				isOk = true
 			}
 			catch(Exception e)
 			{
-				println(e.stackTrace)
+				e.printStackTrace()
 				return false
 			}
 
 			//             def waterMarkCmd = ["cmd /c composite -compose atop watermark.png", 'imgs/main_' + fileName, 'imgs/wm_' + fileName]
 			//             waterMarkCmd.join(" ").execute()
 //		}
+		return isOk
 	}
 
 	/*private String getExtension(MultipartFile file)
@@ -289,7 +333,7 @@ class BildController
 		//@todo Need os specific code here... Remove c for Linux.....
 		def cmd = ['cmd', '/c', 'convert', inpath, action, options, outpath]
 
-		if(GrailsUtil.environment == "production")
+		if(GrailsUtil.environment == "production" || System.getProperty("os.name").contains("Mac"))
 		{
 			cmd = ['convert', inpath, action, options, outpath]
 		}

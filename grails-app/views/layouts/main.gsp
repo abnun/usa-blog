@@ -33,7 +33,7 @@
 			// Add the slideshow providing the controlbar and the thumbstrip
 			hs.addSlideshow({
 				//slideshowGroup: 'group1',
-				interval: 5000,
+				interval: 4000,
 				repeat: false,
 				useControls: true,
 				overlayOptions: {
@@ -53,6 +53,13 @@
 			.highslide-caption {
 				color: white;
 				/*text-transform: uppercase;*/
+			}
+			.highslide-controls a {
+				border-bottom-style: none; 
+			}
+
+			.highslide-thumbstrip-horizontal img {
+				height: 50px;
 			}
 		</style>
 

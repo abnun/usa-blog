@@ -8,22 +8,33 @@
 		<g:javascript library="jquery" />
 		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'swfobject.js')}"></script>
 		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.uploadify.v2.0.3.js')}"></script>
+
 		<jq:jquery>
+
 			$('#albumFotos').uploadify({
 				'uploader'  		: '${resource(dir: 'js/jquery', file: 'uploadify.swf')}',
 				'script'    		: '${createLink(controller: 'bild', action: 'uploadFotos')}',
 				'cancelImg' 		: '${resource(dir: 'images', file: 'cancel.png')}',
-				'auto'      		: true,
+				'auto'      		: false,
 				'fileDataName'		: 'fotos',
 				'multi'				: true,
-				'buttonText'		: 'Fotos auswaehlen',
+				'buttonText'		: 'Bilder waehlen',
 				'fileDesc'			: 'Erlaubte Datei-Typen',
 				'fileExt'			: '*.jpg;*.gif;*.JPG;*.jpeg;*.JPEG;*.GIF;*.png;*.PNG',
-				'folder'    : '/${MediaUtils.DEFAULT_FOLDER}_${params.album.id}',
-				'scriptData'		: {'album.id': '${params.album.id}'}
+				'folder'    		: '/${MediaUtils.DEFAULT_FOLDER}_${params.album.id}',
+				 onAllComplete			: function(event, uploadObj) { alert(uploadObj.filesUploaded + ' Bild(er) hochgeladen. Anzahl der Fehler: ' + uploadObj.errors);},
+				 onError			: function(event, ID, fileObj, errorObj) { alert("Fehler: "+errorObj.info);}
 			});
+
+			$('#startUpload').click(function(){
+			   	var queryString = { 'album.id': '${params.album.id}', 'rotate': $('#rotate').val() };
+   				$('#albumFotos').uploadifySettings('scriptData', queryString);
+        		$('#albumFotos').uploadifyUpload();
+			 });
+
 		</jq:jquery>
-        <title>Bilder hochladen</title>
+
+	<title>Bilder hochladen</title>
     </head>
     <body>
         <div class="body">
@@ -41,7 +52,10 @@
 			<br />
 			<input type="file" name="albumFotos" id="albumFotos" />
 			<br />
-			<a href="javascript:$('#albumFotos').uploadifyClearQueue();">Queue löschen</a>
+			Um <g:textField name="rotate" />° im Uhrzeigersinn drehen?
+			<br />
+			<br />
+			<a id="startUpload" href="javascript:void(0);">Upload starten</a> | <a href="javascript:$('#albumFotos').uploadifyClearQueue();">Queue löschen</a>
 			<br />
 			<br />
 			<g:link controller="album" action="show" id="${params.album.id}"><- Zurück zum Album</g:link>
