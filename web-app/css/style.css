@@ -227,6 +227,31 @@ a:hover {
 	display: inline;
 }
 
+.post_date {
+	width: 74px;
+	height: 65px;
+	float: left;
+	text-align: center;
+	margin-right: 20px;
+	padding: 20px 0 0 0;
+	background: url(../images/date_bg.png) no-repeat center;
+}
+
+span.day {
+	color: #D82A18;
+	font-size: 18px;
+}
+
+span.month {
+	color: #547CC1;
+	font-size: 12px;
+}
+
+span.year {
+	color: #4A4A4A;
+	font-size: 11px;
+}
+
 /* Sidebar */
 
 #sidebar {

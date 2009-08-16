@@ -22,8 +22,13 @@
 	</g:javascript>
 
 <div class="post">
+	<div class="post_date">
+		<span class="day"><g:formatDate date="${tmpPost.dateCreated}" format="dd" /></span><br/>
+		<span class="month"><g:formatDate date="${tmpPost.dateCreated}" format="MM" /></span><br/>
+		<span class="year"><g:formatDate date="${tmpPost.dateCreated}" format="yyyy" /></span>
+	</div>
 	<h1 class="title"><a name="#${tmpPost.titel}"></a>${tmpPost.titel}</h1>
-	<p class="meta">Geschrieben von: <a href="">${tmpPost.verfasser?.username}</a> am <g:formatDate date="${tmpPost.dateCreated}" format="dd.MM.yyyy" />
+	<p class="meta">Geschrieben von: <a href="">${tmpPost.verfasser?.username}</a>
 	&nbsp;&bull;&nbsp; <g:if test="${tmpPost.kommentare}"><a href="#comments_${tmpPost.id}" class="comments">Kommentare (${tmpPost.kommentare ? tmpPost.kommentare.size() : '0'})</a></g:if><g:else><b style="color: black;">Kommentare (${tmpPost.kommentare ? tmpPost.kommentare.size() : '0'})</b></g:else><!-- &nbsp;&bull;&nbsp; <a href="#" class="permalink">Full article</a></p>-->
 	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <g:link controller="post" action="edit" id="${tmpPost.id}">Post ändern</g:link></jsec:hasRole>
 	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <a href="javascript: deletePostOrComment('PostForm_${tmpPost.id}');">Post löschen</a></jsec:hasRole>

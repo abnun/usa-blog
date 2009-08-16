@@ -103,6 +103,10 @@ class BildController
 					return
 				}
 			}
+			if(params.album.id != bildInstance.album.id)
+			{
+				moveBildToAlbumOnDisk(params.album.id)
+			}
 			bildInstance.properties = params
 			if (!bildInstance.hasErrors() && bildInstance.save())
 			{
@@ -268,10 +272,26 @@ class BildController
 		}
 	}
 
+	private void printSysAndEnvVariables()
+	{
+		println("OS -> ${System.getProperty("os.name")}")
+
+		println "PATH -> ${System.getenv().get("PATH")}"
+		println "USER -> ${System.getenv().get("USER")}"
+		println "SHELL -> ${System.getenv().get("SHELL")}"
+	}
+
+	private boolean moveBildtoAlbumOnDisk(String albumId)
+	{
+
+	}
+
 	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile, String rotateDegrees)
 	{
 		final String original = fileName
-		println("OS -> ${System.getProperty("os.name")}")
+
+		printSysAndEnvVariables()
+
 		if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 		{
 			original = "\"${original}\""
@@ -296,9 +316,6 @@ class BildController
 
 			Process process = null
 
-			println "Env -> ${System.getenv().get("PATH")}"
-			println "User -> ${System.getenv().get("USER")}"
-			println "Shell -> ${System.getenv().get("SHELL")}"
 
 			if(rotateDegrees && new File(original).exists())
 			{

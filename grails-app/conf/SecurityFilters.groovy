@@ -48,5 +48,44 @@ class SecurityFilters
 				}
 			}
 		}
+
+		// Modifying, creating or deleting an album requires the "Administrator"
+		// role.
+		albumEditing(controller: "album", action: "(create|edit|update|delete)")
+		{
+			before =
+			{
+				accessControl
+				{
+					role("Administrator")
+				}
+			}
+		}
+
+		// Modifying, creating or deleting a bild requires the "Administrator"
+		// role.
+		bildEditing(controller: "bild", action: "(create|edit|update|delete|uploadFotos|rotateFoto)")
+		{
+			before =
+			{
+				accessControl
+				{
+					role("Administrator")
+				}
+			}
+		}
+
+		// Modifying, creating or deleting a news requires the "Administrator"
+		// role.
+		newsEditing(controller: "news", action: "(create|edit|update|delete|createOrEdit)")
+		{
+			before =
+			{
+				accessControl
+				{
+					role("Administrator")
+				}
+			}
+		}
 	}
 }
