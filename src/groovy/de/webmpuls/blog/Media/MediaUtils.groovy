@@ -13,5 +13,6 @@ class MediaUtils
 	public static final String SUFFIX = ".jpg"
 
 	public static final String DEFAULT_FOLDER = "album"
+	public static final String DEFAULT_FOLDER_IMAGE = "Image"
 	public static final String DEFAULT_UPLOADS_FOLDER = "uploads"
 }

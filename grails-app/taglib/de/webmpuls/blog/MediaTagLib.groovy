@@ -19,7 +19,11 @@ class MediaTagLib
 		}
 		else
 		{
-			String tmpPath = "${request.getContextPath()}/uploads/${MediaUtils.DEFAULT_FOLDER}_${attrs['albumId']}/"
+			Album tmpAlbum = Album.get(attrs['albumId'])
+			
+			String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
+
+			String tmpPath = "${request.getContextPath()}/${MediaUtils.DEFAULT_UPLOADS_FOLDER}/${MediaUtils.DEFAULT_FOLDER_IMAGE}/${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}/"
 
 			out << tmpPath
 		}

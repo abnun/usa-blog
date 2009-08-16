@@ -17,6 +17,15 @@
                 <g:renderErrors bean="${bildInstance}" as="list" />
             </div>
             </g:hasErrors>
+			<br />
+			<g:form controller="bild" action="rotateFoto" id="${bildInstance.id}">
+				Um <g:textField name="rotate" value="${params.rotate ?: ''}" />° im Uhrzeigersinn drehen?
+				<br />
+				<br />
+				<g:submitButton name="rotateSubmit" value="Drehen" />
+			</g:form>
+			<br />
+			<br />
             <g:form method="post" >
                 <input type="hidden" name="id" value="${bildInstance?.id}" />
                 <input type="hidden" name="version" value="${bildInstance?.version}" />
@@ -56,7 +65,7 @@
                                     <label for="album">Album:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:bildInstance,field:'album','errors')}">
-                                    <g:select optionKey="id" from="${de.webmpuls.blog.Album.list()}" name="album.id" value="${bildInstance?.album?.id}" ></g:select>
+                                    <g:select optionKey="id" from="${de.webmpuls.blog.Album.list()}" name="album.id" value="${bildInstance?.album?.id}" ></g:select>&nbsp;&nbsp;&nbsp;<g:link controller="album" action="show" id="${bildInstance?.album?.id}">-> Zum Album</g:link>
                                 </td>
                             </tr> 
                         

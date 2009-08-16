@@ -4,15 +4,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Neuen Post erstellen</title>
+        <title>Neuen Post schreiben</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${resource(dir:'')}">Home</a></span>
-            %{--<span class="menuButton"><g:link class="list" action="list">Post List</g:link></span>--}%
-        </div>
         <div class="body">
-            <h1>Neuen Post erstellen</h1>
+            <h1>Neuen Post schreiben</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -23,7 +19,7 @@
             </g:hasErrors>
             <g:form action="save" method="post" >
                 <div class="dialog">
-                    <table>
+                    <table style="width: 100%;">
                         <tbody>
                         
                             <tr class="prop">
@@ -46,6 +42,7 @@
 											height="500"
 											toolbar="Standard"
 											fileBrowser="default">
+										${postInstance?.inhalt}
 									</fckeditor:editor>
                                     %{--<textarea rows="5" cols="40" name="inhalt">${fieldValue(bean:postInstance, field:'inhalt')}</textarea>--}%
                                 </td>

@@ -33,7 +33,7 @@
                                     <label for="verfasser">Verfasser:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:kommentarInstance,field:'verfasser','errors')}">
-                                    <input type="text" id="verfasser" name="verfasser" value="${fieldValue(bean:kommentarInstance,field:'verfasser')}"/>
+                                    <input type="text" id="verfasser" name="verfasser" value="${fieldValue(bean:kommentarInstance,field:'verfasser') ? fieldValue(bean:kommentarInstance,field:'verfasser') : jsec.principal()}"/>
                                 </td>
                             </tr>
 

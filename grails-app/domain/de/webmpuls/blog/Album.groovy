@@ -28,6 +28,7 @@ class Album
 
 	public String toString()
 	{
-		return name
+		String result = name.replaceAll(' ', '_')
+		return result
 	}
 }

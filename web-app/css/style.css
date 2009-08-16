@@ -223,6 +223,10 @@ a:hover {
 	text-align: justify;
 }
 
+.post .entry img {
+	display: inline;
+}
+
 /* Sidebar */
 
 #sidebar {

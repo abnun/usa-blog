@@ -17,6 +17,7 @@
 
 		<g:layoutHead />
         <g:javascript library="application" />
+		<g:javascript library="jquery" />
 
 		<g:javascript>
 			hs.graphicsDir = '${resource(dir: 'highslide/graphics/')}';
@@ -54,13 +55,15 @@
 				color: white;
 				/*text-transform: uppercase;*/
 			}
+
 			.highslide-controls a {
 				border-bottom-style: none; 
 			}
 
 			.highslide-thumbstrip-horizontal img {
-				height: 50px;
+				height: 45px;
 			}
+
 		</style>
 
     </head>

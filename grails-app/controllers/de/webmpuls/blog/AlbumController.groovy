@@ -36,7 +36,7 @@ class AlbumController
 		if (!albumInstance)
 		{
 			flash.message = "Album mit id '${params.id}' nicht gefunden."
-			redirect(action: list)
+			redirect(action: 'list_frontend')
 		}
 		else
 		{

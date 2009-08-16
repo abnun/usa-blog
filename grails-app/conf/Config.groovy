@@ -36,14 +36,18 @@ grails.converters.encoding="UTF-8"
 grails.enable.native2ascii = true
 
 // set per-environment serverURL stem for creating absolute links
-environments {
-    production {
+environments
+{
+    production
+	{
         grails.serverURL = "http://www.changeme.com"
     }
-    development {
+    development
+	{
         grails.serverURL = "http://localhost:8080/${appName}"
-    }
-    test {
+	}
+    test
+	{
         grails.serverURL = "http://localhost:8080/${appName}"
     }
 
@@ -76,12 +80,12 @@ fckeditor
 {
     upload
 	{
-        basedir = "./tmp/storagearea/"
-        baseurl = "./uploads/"
-        overwrite = false
+        //basedir = "/tmp/storagearea/"
+        //baseurl = "/"
+        overwrite = true
         link
 		{
-            browser = true
+            browser = false
             upload = false
             allowed = []
             denied = ['html', 'htm', 'php', 'php2', 'php3', 'php4', 'php5',

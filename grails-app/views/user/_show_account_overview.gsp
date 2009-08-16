@@ -29,7 +29,7 @@
 			<g:link controller="news" action="createOrEdit">Die News ändern</g:link>
 		</li>
 		<li style="line-height: inherit;">
-			<g:link controller="post" action="create">Einen neuen Post anlegen</g:link>
+			<g:link controller="post" action="create">Einen neuen Post schreiben</g:link>
 		</li>
 	</ul>
 </jsec:hasRole>

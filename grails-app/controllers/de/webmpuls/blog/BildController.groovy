@@ -157,9 +157,9 @@ class BildController
 				if(uploadFolder)
 				{
 					tmpUploadFolder = ((GrailsApplicationAttributes)grailsAttributes).
-							getApplicationContext().getResource( File.separator + "uploads" + uploadFolder ).getFile()
+							getApplicationContext().getResource( File.separator + MediaUtils.DEFAULT_UPLOADS_FOLDER + File.separator + MediaUtils.DEFAULT_FOLDER_IMAGE + uploadFolder ).getFile()
 
-					uploadFolder = getUploadPath(uploadFolder, tmpUploadFolder).getAbsolutePath()
+					uploadFolder = getUploadPath(tmpUploadFolder).getAbsolutePath()
 					println uploadFolder
 				}
 
@@ -219,7 +219,7 @@ class BildController
 			else
 			{
 				flash.message = 'file cannot be empty'
-				render(view: 'uploadForm')
+				redirect(controller: 'album', action: 'show', id: params.album.id)
 			}
 		}
 		else
@@ -228,6 +228,43 @@ class BildController
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
 			response.outputStream << "Foto konnte nicht geladen werden."
 			response.outputStream.flush()
+		}
+	}
+
+	def rotateFoto =
+	{
+		println("params -> $params")
+
+		if(params.id)
+		{
+			Bild tmpBild = Bild.get(params.id)
+
+			if(tmpBild && params.rotate)
+			{
+				Album tmpAlbum = tmpBild.album
+
+				String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
+
+				File tmpUploadFolder = ((GrailsApplicationAttributes)grailsAttributes).
+							getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
+				String uploadFolder = getUploadPath(tmpUploadFolder).getAbsolutePath()
+				println uploadFolder
+				String newFilePath = "${uploadFolder}${File.separator}${tmpBild.getTempURL()}"
+				String rotateDegrees = params.rotate
+
+				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild, rotateDegrees)
+
+				if(isOk)
+				{
+					flash.message = "Bild erfolgreich gedreht."
+					redirect(action: 'edit', id: tmpBild.id)
+				}
+				else
+				{
+					flash.message = "Bild konnte nicht gedreht werden."
+					redirect(action: 'edit', id: params.id, params: [rotate: params.rotate])
+				}
+			}
 		}
 	}
 
@@ -244,9 +281,9 @@ class BildController
 //		def t = Thread.start
 //		{
 
-			final String uploadPathBig = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
-			final String uploadPathNormal = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getURL()}"
-			final String uploadPathThumbNail = "${getUploadPath(uploadFolder,tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
+			final String uploadPathBig = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
+			final String uploadPathNormal = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getURL()}"
+			final String uploadPathThumbNail = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
 
 			if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 			{
@@ -382,7 +419,7 @@ class BildController
 		return sb.toString()
 	}
 
-	private File getUploadPath(String uploadFolder, File tmpUploadFolder)
+	private File getUploadPath(File tmpUploadFolder)
 	{
 		if(!tmpUploadFolder.exists())
 		{

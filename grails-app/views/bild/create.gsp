@@ -5,10 +5,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'uploadify.css')}" />
-		<g:javascript library="jquery" />
 		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'swfobject.js')}"></script>
 		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.uploadify.v2.0.3.js')}"></script>
 
+		<%
+		    Album tmpAlbum = Album.get(params.album.id)
+
+			String albumDate = ""
+			if(tmpAlbum)
+			{
+				albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
+			}
+
+		%>
 		<jq:jquery>
 
 			$('#albumFotos').uploadify({
@@ -21,7 +30,7 @@
 				'buttonText'		: 'Bilder waehlen',
 				'fileDesc'			: 'Erlaubte Datei-Typen',
 				'fileExt'			: '*.jpg;*.gif;*.JPG;*.jpeg;*.JPEG;*.GIF;*.png;*.PNG',
-				'folder'    		: '/${MediaUtils.DEFAULT_FOLDER}_${params.album.id}',
+				'folder'    		: '/${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}',
 				 onAllComplete			: function(event, uploadObj) { alert(uploadObj.filesUploaded + ' Bild(er) hochgeladen. Anzahl der Fehler: ' + uploadObj.errors);},
 				 onError			: function(event, ID, fileObj, errorObj) { alert("Fehler: "+errorObj.info);}
 			});

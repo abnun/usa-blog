@@ -8,6 +8,15 @@
     </head>
     <body>
         <div class="body">
+			<div class="post">
+
+				<h1 class="title">${albumInstance.name}</h1>
+				<g:if test="${albumInstance.beschreibung}">
+					<p class="meta">${albumInstance.beschreibung}</p>
+				</g:if>
+
+			</div>
+
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -62,6 +71,7 @@
 					</jsec:isLoggedIn>
 				</g:if>
 				<g:else>
+					<br />
 					Es sind noch keine Bilder in diesem Album vorhanden ...
 					<br />
 					<br />
