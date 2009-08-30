@@ -1,13 +1,9 @@
 <div id="menu">
 	<ul>
 		<li><a href="${resource(dir: '')}">Blog</a></li>
-		<nav:eachItem group="menutop">
+		<nav:eachItem group="menutop" actionMatch="true">
 			<li class="${Boolean.valueOf(it.active) ? 'navigation_active' : ''}"><a href="${it.link}">${it.title}</a></li>
 		</nav:eachItem>
-		%{--<li><a href="${createLink(controller: 'album', action: 'list_frontend')}">Fotoalben</a></li>--}%
-		<li><a href="#">Route</a></li>
-		<li><a href="#">Kontakt</a></li>
-		<li><a href="#">Impressum</a></li>
 	</ul>
 	<ul>
 		<li style="float: right;">

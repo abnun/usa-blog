@@ -116,3 +116,6 @@ fckeditor
         }
     }
 }
+
+// jsessionid anschalten
+grails.views.enable.jsessionid=true
