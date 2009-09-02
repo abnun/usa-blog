@@ -32,7 +32,16 @@
                                     <input type="text" id="titel" name="titel" value="${fieldValue(bean:postInstance,field:'titel')}"/>
                                 </td>
                             </tr> 
-                        
+
+							<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="archive">Archiv:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:postInstance,field:'archive','errors')}">
+                                    <g:checkBox name="archive" value="${albumInstance?.archive}" />
+                                </td>
+                            </tr>
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="inhalt">Inhalt:</label>
