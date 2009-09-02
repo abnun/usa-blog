@@ -6,6 +6,7 @@ import de.webmpuls.blog.Media.MediaUtils
 class MediaTagLib
 {
 	static namespace = "wm_media"
+
 	/**
 	 * Gibt den Pfad zu den Bilder zurück.
 	 */

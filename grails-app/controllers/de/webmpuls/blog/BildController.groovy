@@ -276,9 +276,17 @@ class BildController
 	{
 		println("OS -> ${System.getProperty("os.name")}")
 
-		println "PATH -> ${System.getenv().get("PATH")}"
-		println "USER -> ${System.getenv().get("USER")}"
-		println "SHELL -> ${System.getenv().get("SHELL")}"
+		if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+		{
+			println "PATH -> ${System.getenv().get("Path")}"
+			println "USER -> ${System.getenv().get("USERNAME")}"
+		}
+		else
+		{
+			println "PATH -> ${System.getenv().get("PATH")}"
+			println "USER -> ${System.getenv().get("USER")}"
+			println "SHELL -> ${System.getenv().get("SHELL")}"
+		}
 	}
 
 	private boolean moveBildtoAlbumOnDisk(String albumId)
@@ -316,8 +324,8 @@ class BildController
 
 			Process process = null
 
-
-			if(rotateDegrees && new File(original).exists())
+			File originalFile = new File(original)
+			if(rotateDegrees && originalFile.exists())
 			{
 				cmdRotate = "convert -rotate ${rotateDegrees} ${original} ${uploadPathNormal}"
 				//cmdRotate = "convert -rotate \"${rotateDegrees}\" ${original} ${uploadPathNormal}"
@@ -339,6 +347,11 @@ class BildController
 			else
 			{
 				cmdRotate = "cp ${original} ${uploadPathNormal}"
+				if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+				{
+					cmdRotate = "xcopy ${original} ${uploadPathNormal} /Y /C /R /V /-I"
+				}
+
 				println cmdRotate
 				try
 				{

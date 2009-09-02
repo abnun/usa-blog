@@ -1,6 +1,5 @@
 <div id="menu">
 	<ul>
-		<li><a href="${resource(dir: '')}">Blog</a></li>
 		<nav:eachItem group="menutop" actionMatch="true">
 			<li class="${Boolean.valueOf(it.active) ? 'navigation_active' : ''}"><a href="${it.link}">${it.title}</a></li>
 		</nav:eachItem>

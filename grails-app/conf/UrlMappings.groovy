@@ -5,7 +5,7 @@ class UrlMappings {
 			 // apply constraints here
 		  }
 	  }
-      "/"(view:"/index")
+      "/"(controller: "post", action: 'list_frontend')
 	  "500"(view:'/error')
 	}
 }

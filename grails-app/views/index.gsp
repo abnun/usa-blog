@@ -1,6 +1,5 @@
 <html>
     <head>
-        <title>USA Blog: Claudi und Markus</title>
 		<meta name="layout" content="main" />
     </head>
     <body>

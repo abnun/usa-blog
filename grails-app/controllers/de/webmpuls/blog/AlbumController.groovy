@@ -4,7 +4,7 @@ class AlbumController
 {
 	static navigation = [
 		group: 'menutop',
-		order: 10,
+		order: 30,
 		title: 'Fotoalben',
 		action: 'list_frontend'
 	]

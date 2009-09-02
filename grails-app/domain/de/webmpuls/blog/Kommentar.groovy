@@ -13,6 +13,7 @@ class Kommentar extends BlogItem
 		verfasser(blank: false)
 		titel(nullable: true, blank: true)
 		inhalt(nullable: false, blank: false, widget: "textarea")
+		archive(nullable: true)
 		dateCreated(display: false)
     }
 

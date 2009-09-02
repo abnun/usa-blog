@@ -12,6 +12,9 @@
             </g:if>
             <div class="list">
 				<g:if test="${albumInstanceList}">
+					<p>
+						Um ein Album anzusehen, einfach auf das jeweilige Bild klicken.
+					</p>
 					<table>
 					<tr>
 						<g:each in="${albumInstanceList}" status="i" var="albumInstance">
@@ -23,7 +26,7 @@
 											<div class="thumbwrapper">
 												<g:link action="show" id="${albumInstance.id}">
 													<p class="meta">
-														${fieldValue(bean: albumInstance, field: 'name')}
+														<b>${fieldValue(bean: albumInstance, field: 'name')}</b>
 													</p>
 													<%
 														List albumBilder = albumInstance.bilder?.asList()

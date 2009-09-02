@@ -64,7 +64,7 @@ class SecurityFilters
 
 		// Modifying, creating or deleting a bild requires the "Administrator"
 		// role.
-		bildEditing(controller: "bild", action: "(create|edit|update|delete|uploadFotos|rotateFoto)")
+		bildEditing(controller: "bild", action: "(create|edit|update|delete)")
 		{
 			before =
 			{

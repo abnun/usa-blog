@@ -26,6 +26,9 @@
 				    def albumBilderList = albumInstance.bilder
 				%>
 				<g:if test="${albumBilderList && !albumBilderList.isEmpty()}">
+					<p>
+						Um die Bilder zu vergrößern einfach drauf klicken. <g:if test="${albumBilderList.size() > 1}">Nach dem Vergrößern besteht zusätzlich die Möglichkeit eine Art Dia-Show zu starten (dazu muss man den Knopf "Abspielen" klicken).</g:if>
+					</p>
 					<table>
 						<tr>
 						<g:each in="${albumBilderList}" status="i" var="bildInstance">

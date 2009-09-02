@@ -57,10 +57,22 @@ class BootStrap
 
 			if(postsSize == 0)
 			{
-				Post post1 = new Post(titel: "Willkommen zu unserem USA Blog",
-						inhalt: '''Hier werden wir die nächsten drei Wochen über unseren USA-Urlaub berichten und unsere
-						Urlaubsfotos einstellen. <br/><br/>Viel Spaß beim Lesen, Anschauen und Kommentieren! :-)''',
-						verfasser: adminUser1).save(flush: true)
+				Post post1 = new Post(titel: "Hallöchen...",
+						inhalt: '''<p>...ihr armen und gr&ouml;&szlig;tenteils arbeitenden Daheimgebliebenen,</p>
+<p>damit ihr uns in den n&auml;chsten drei Wochen nicht allzu sehr vermisst und auch ab und zu was von uns h&ouml;rt, haben wir (na ja, gut, Markus) einen Blog f&uuml;r unsere USA-Reise erstellt.</p>
+<p>Hier k&ouml;nnt ihr jeden Tag lesen und sehen</p>
+<ul>
+    <li>ob wir in New York neben Shopping auch noch Zeit f&uuml;r Freiheitsstatue und Co gehabt haben,</li>
+    <li>ob wir in Las Vegas unsere letzte Kohle verzockt oder doch die Dollarzeichen geleuchtet und wir uns von Elvis (oder macht das jetzt Michael????) am 09.09.09 haben trauen lassen,</li>
+    <li>ob unser Mietwagen die Hitze des Death Valleys und wir die B&auml;ren im Yosemite Nationalpark &uuml;berlebt haben und</li>
+    <li>ob wir in San Francisco in Schlaghosen mit den Hippies gefeiert oder welche Stars wir in Hollywood getroffen haben.</li>
+</ul>
+<p>Nat&uuml;rlich freuen wir uns auch &uuml;ber ein paar News von zuhause, wie das Weindorf so ist, wer mit wem und vor allem wann und wo, was der kleine Zwerg so macht und wie es Herrn Oleander so geht.....<br />
+<br />
+Also, viel Spa&szlig; beim Lesen, Fotos schauen und Kommentieren! :-)</p>
+<p>Claudi &amp; Markus</p>
+<p>PS: Und trinkt ein, zwei, drei Fl&auml;schen auf dem Weindorf f&uuml;r uns mit..........</p>''',
+						verfasser: adminUser2).save(flush: true)
 			}
 
 			println("###########################")

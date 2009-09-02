@@ -5,7 +5,7 @@
 		<meta name="description" content=""/>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
-		<title><g:layoutTitle default="USA Blog: Claudi und Markus" /></title>
+		<title><g:layoutTitle default="Claudis und Markus' USA-Blog" /></title>
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" />
 		<script type="text/javascript" src="${resource(dir: 'highslide', file: 'highslide-with-gallery.js')}"></script>
 		<script type="text/javascript" src="${resource(dir: 'highslide', file: 'highslide_de.js')}"></script>
@@ -16,7 +16,7 @@
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 
         <g:javascript library="application" />
-		<g:javascript library="jquery" />
+		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-1.3.2.min.js')}"></script>
 
 		<g:javascript>
 			hs.graphicsDir = '${resource(dir: 'highslide/graphics/')}';

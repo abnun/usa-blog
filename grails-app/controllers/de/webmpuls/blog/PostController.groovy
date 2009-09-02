@@ -2,6 +2,10 @@ package de.webmpuls.blog
 
 class PostController
 {
+	static navigation = [
+		[group: 'menutop', order: 10, title: 'Blog', action: 'list_frontend'],
+		[group: 'menutop', order: 20, title: 'Archiv', action: 'list_frontend_archive', isVisible: { !Post.findAllWhere(archive: true).isEmpty() } ]
+	]
 
 	def index =
 	{
@@ -19,8 +23,12 @@ class PostController
 
 	def list_frontend =
 	{
-		params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-		[postInstanceList: Post.list(params), postInstanceTotal: Post.count()]
+		[postInstanceList: Post.findAllWhere(archive: false), postInstanceTotal: Post.count()]
+	}
+
+	def list_frontend_archive =
+	{
+		[postInstanceList: Post.findAllWhere(archive: true), postInstanceTotal: Post.count()]
 	}
 
 	def show =
@@ -129,6 +137,37 @@ class PostController
 		else
 		{
 			render(view: 'create', model: [postInstance: postInstance])
+		}
+	}
+
+	def archive =
+	{
+
+		Post postInstance = Post.get(params.id)
+		if (postInstance)
+		{
+			if(postInstance.archive)
+			{
+				postInstance.archive = false
+			}
+			else
+			{
+				postInstance.archive = true
+			}
+			if (!postInstance.hasErrors() && postInstance.save())
+			{
+				flash.message = "Post ${params.id} updated"
+				redirect(uri: '/')
+			}
+			else
+			{
+				render(view: 'edit', model: [postInstance: postInstance])
+			}
+		}
+		else
+		{
+			flash.message = "Post not found with id ${params.id}"
+			redirect(action: list)
 		}
 	}
 }

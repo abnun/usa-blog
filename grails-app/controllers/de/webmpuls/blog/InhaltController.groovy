@@ -3,8 +3,8 @@ package de.webmpuls.blog
 class InhaltController
 {
 	static navigation = [
-		[group: 'menutop', order: 20, title: 'Route', action: 'route'],
-		[group: 'menutop', order: 30, title: 'Impressum', action: 'impressum']
+		[group: 'menutop', order: 40, title: 'Route', action: 'route'],
+		[group: 'menutop', order: 50, title: 'Impressum', action: 'impressum']
 	]
 
     def index =

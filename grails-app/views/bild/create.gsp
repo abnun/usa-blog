@@ -6,7 +6,7 @@
         <meta name="layout" content="main" />
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'uploadify.css')}" />
 		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'swfobject.js')}"></script>
-		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.uploadify.v2.0.3.js')}"></script>
+		<script type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.uploadify.v2.1.0.min.js')}"></script>
 
 		<%
 		    Album tmpAlbum = Album.get(params.album.id)
@@ -27,12 +27,14 @@
 				'auto'      		: false,
 				'fileDataName'		: 'fotos',
 				'multi'				: true,
+				'method'			: 'POST',
 				'buttonText'		: 'Bilder waehlen',
 				'fileDesc'			: 'Erlaubte Datei-Typen',
 				'fileExt'			: '*.jpg;*.gif;*.JPG;*.jpeg;*.JPEG;*.GIF;*.png;*.PNG',
 				'folder'    		: '/${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}',
-				 onAllComplete			: function(event, uploadObj) { alert(uploadObj.filesUploaded + ' Bild(er) hochgeladen. Anzahl der Fehler: ' + uploadObj.errors);},
-				 onError			: function(event, ID, fileObj, errorObj) { alert("Fehler: "+errorObj.info);}
+				%{--'onComplete'		: function (evt, queueID, fileObj, response, data) { alert("Response: "+response);},--}%
+				'onAllComplete'	: function(event, uploadObj) { alert(uploadObj.filesUploaded + ' Bild(er) hochgeladen. Anzahl der Fehler: ' + uploadObj.errors);},
+				'onError'			: function(event, ID, fileObj, errorObj) { alert("Fehler: "+errorObj.info);}
 			});
 
 			$('#startUpload').click(function(){
@@ -56,7 +58,7 @@
             </div>
             </g:hasErrors>
 
-			Hier kannst du ein oder mehrere Bilder zum Album '${Album.get(params.album.id)}' hochladen.
+			Hier kannst du ein oder mehrere Bilder zum Album '${Album.get(params.album.id)?.name}' hochladen.
 			<br />
 			<br />
 			<input type="file" name="albumFotos" id="albumFotos" />
