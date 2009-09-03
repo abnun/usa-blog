@@ -18,7 +18,7 @@
 					<table>
 					<tr>
 						<g:each in="${albumInstanceList}" status="i" var="albumInstance">
-							<g:if test="${albumInstance.sichtbar}">
+							<g:if test="${albumInstance.sichtbar || jsec.principal()}">
 								<g:if test="${i > 0 && 5 % i == 2}">
 									<tr>
 								</g:if>

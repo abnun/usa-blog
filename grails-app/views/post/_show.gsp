@@ -23,9 +23,9 @@
 
 <div class="post">
 	<div class="post_date">
-		<span class="day"><g:formatDate date="${tmpPost.lastUpdated}" format="dd" /></span><br/>
-		<span class="month"><g:formatDate date="${tmpPost.lastUpdated}" format="MM" /></span><br/>
-		<span class="year"><g:formatDate date="${tmpPost.lastUpdated}" format="yyyy" /></span>
+		<span class="day"><g:formatDate date="${tmpPost.dateCreated}" format="dd" /></span><br/>
+		<span class="month"><g:formatDate date="${tmpPost.dateCreated}" format="MM" /></span><br/>
+		<span class="year"><g:formatDate date="${tmpPost.dateCreated}" format="yyyy" /></span>
 	</div>
 	<h1 class="title"><a name="#${tmpPost.titel}"></a>${tmpPost.titel}</h1>
 	<p class="meta">Geschrieben von: <a href="javascript: void(0);">${tmpPost.verfasser?.username}</a>
