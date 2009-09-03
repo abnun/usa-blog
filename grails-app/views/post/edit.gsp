@@ -87,8 +87,8 @@ value="${postInstance?.kommentare}" />
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Ändern" action="update" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Wirklich löschen?');" value="Löschen" action="delete" /></span>
+                    <span class="button"><g:actionSubmit class="save" value="Aendern" action="update" /></span>
+                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Wirklich loeschen?');" value="Loeschen" action="delete" /></span>
                 </div>
             </g:form>
         </div>

@@ -64,7 +64,7 @@
                 <g:form>
                     <input type="hidden" name="id" value="${kommentarInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Wirklich loeschen?');" value="Delete" /></span>
                 </g:form>
             </div>
         </div>

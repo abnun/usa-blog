@@ -71,8 +71,8 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="Ändern" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Wirklich löschen?');" action="delete" value="Löschen" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="Aendern" /></span>
+                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Wirklich loeschen?');" action="delete" value="Loeschen" /></span>
                 </div>
             </g:form>
         </div>
