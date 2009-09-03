@@ -12,9 +12,25 @@
             </g:if>
             <div class="list">
 				<g:if test="${albumInstanceList}">
-					<p>
-						Um ein Album anzusehen, einfach auf das jeweilige Bild klicken.
-					</p>
+					<%
+					    boolean showInfo = false
+					    albumInstanceList.findAll
+						{
+							Album albumInstance ->
+							if(albumInstance.sichtbar)
+							{
+								showInfo = true
+							}
+						}
+					%>
+					<g:if test="${showInfo}">
+						<p>
+							Um ein Album anzusehen, einfach auf das jeweilige Bild klicken.
+						</p>
+					</g:if>
+					<g:else>
+						Es sind noch keine Fotoalben vorhanden ...
+					</g:else>
 					<table>
 					<tr>
 						<g:each in="${albumInstanceList}" status="i" var="albumInstance">
