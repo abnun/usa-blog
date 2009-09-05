@@ -85,6 +85,21 @@ class PostController
 		}
 	}
 
+	def edit2 =
+	{
+		def postInstance = Post.get(params.id)
+
+		if (!postInstance)
+		{
+			flash.message = "Post not found with id ${params.id}"
+			redirect(action: list)
+		}
+		else
+		{
+			return [postInstance: postInstance]
+		}
+	}
+
 	def update =
 	{
 		def postInstance = Post.get(params.id)
@@ -120,6 +135,13 @@ class PostController
 	}
 
 	def create =
+	{
+		def postInstance = new Post()
+		postInstance.properties = params
+		return ['postInstance': postInstance]
+	}
+
+	def create2 =
 	{
 		def postInstance = new Post()
 		postInstance.properties = params

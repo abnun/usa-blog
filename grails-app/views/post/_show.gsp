@@ -32,6 +32,7 @@
 	&nbsp;&bull;&nbsp; <g:if test="${tmpPost.kommentare}"><a href="#comments_${tmpPost.id}" class="comments">Kommentare (${tmpPost.kommentare ? tmpPost.kommentare.size() : '0'})</a></g:if><g:else><b style="color: black;">Kommentare (${tmpPost.kommentare ? tmpPost.kommentare.size() : '0'})</b></g:else><!-- &nbsp;&bull;&nbsp; <a href="#" class="permalink">Full article</a></p>-->
 	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <g:link controller="post" action="archive" id="${tmpPost.id}">Archiv (ja/nein)</g:link></jsec:hasRole>
 	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <g:link controller="post" action="edit" id="${tmpPost.id}">Ändern</g:link></jsec:hasRole>
+	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <g:link controller="post" action="edit2" id="${tmpPost.id}">Ändern (iPhone)</g:link></jsec:hasRole>
 	<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <a href="javascript: deletePostOrComment('PostForm_${tmpPost.id}');">Löschen</a></jsec:hasRole>
 	<g:form name="PostForm_${tmpPost.id}" controller="post" action="delete" id="${tmpPost.id}" method="post">
 	</g:form>
