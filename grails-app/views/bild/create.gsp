@@ -30,7 +30,7 @@
 				'method'			: 'POST',
 				'buttonText'		: 'Bilder waehlen',
 				'fileDesc'			: 'Erlaubte Datei-Typen',
-				'fileExt'			: '*.jpg;*.gif;*.JPG;*.jpeg;*.JPEG;*.GIF;*.png;*.PNG',
+				'fileExt'			: '*.jpg;*.gif;*.JPG;*.jpeg;*.JPEG;*.GIF;*.png;*.PNG;*.avi;*.AVI',
 				'folder'    		: '/${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}',
 				%{--'onComplete'		: function (evt, queueID, fileObj, response, data) { alert("Response: "+response);},--}%
 				'onAllComplete'	: function(event, uploadObj) { alert(uploadObj.filesUploaded + ' Bild(er) hochgeladen. Anzahl der Fehler: ' + uploadObj.errors);},
