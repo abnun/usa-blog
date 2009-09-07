@@ -23,7 +23,9 @@ class PostController
 
 	def list_frontend =
 	{
-		[postInstanceList: Post.findAllWhere(archive: false), postInstanceTotal: Post.count()]
+def postInstanceList = Post.findAllWhere(archive: false)
+postInstanceList.sort {a, b -> b.dateCreated <=> a.dateCreated}
+		[postInstanceList: postInstanceList, postInstanceTotal: postInstanceList.size()]
 	}
 
 	def list_frontend_archive =
