@@ -119,3 +119,5 @@ fckeditor
 
 // jsessionid anschalten
 grails.views.enable.jsessionid=true
+
+grails.gsp.enable.reload = true
