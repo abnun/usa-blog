@@ -41,7 +41,7 @@
 	</div>
 </div>
 <br />
-<img src="${resource(dir: 'images/skin', file: 'database_add.png')}" alt="Neuer Kommentar" /> <g:link class="create" controller="kommentar" action="create" params="[postId: tmpPost.id]">Neuer Kommentar zu diesem Post</g:link>
+<img src="${resource(dir: 'images/skin', file: 'database_add.png')}" alt="Neuer Kommentar" /> <g:link class="create" controller="kommentar" action="create" params="[postId: tmpPost.id]">Neuer Kommentar zu diesem Blog-Eintrag</g:link>
 <br />
 <br />
 	<g:if test="${tmpPost.kommentare}">
@@ -55,7 +55,7 @@
 			<g:while test="${i < 5 && (tmpCommentList != null && !tmpCommentList.isEmpty() && tmpCommentList.size() > i)}">
 				<div class="post">
 					<h3 class="title" style="font-size: 1.3em;">${tmpCommentList[i].titel != null ? tmpCommentList[i].titel.encodeAsHTML() : ''}</h3>
-					<p class="meta">Geschrieben von: <b style="color: black;">${tmpCommentList[i].verfasser.encodeAsHTML()}</b> am <g:formatDate date="${tmpCommentList[i].dateCreated}" format="dd.MM.yyyy"/>
+					<p class="meta">Geschrieben von: <b style="color: black;">${tmpCommentList[i].verfasser.encodeAsHTML()}</b> am <g:formatDate date="${tmpCommentList[i].dateCreated}" format="dd.MM.yyyy"/> um <g:formatDate date="${tmpCommentList[i].dateCreated}" format="HH:mm" /> Uhr
 						<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <a href="javascript: deletePostOrComment('KommentarForm_${tmpCommentList[i].id}');">Kommentar löschen</a></jsec:hasRole>
 						<g:form name="KommentarForm_${tmpCommentList[i].id}" controller="kommentar" action="delete" id="${tmpCommentList[i].id}" method="post">
 						</g:form>
@@ -78,7 +78,7 @@
 				<g:each in="${tmpCommentList}" var="${tmpComment}">
 					<div class="post">
 						<h3 class="title" style="font-size: 1.3em;">${tmpComment.titel != null ? tmpComment.titel.encodeAsHTML() : ''}</h3>
-						<p class="meta">Geschrieben von: <b style="color: black;">${tmpComment.verfasser.encodeAsHTML()}</b> am <g:formatDate date="${tmpComment.dateCreated}" format="dd.MM.yyyy"/>
+						<p class="meta">Geschrieben von: <b style="color: black;">${tmpComment.verfasser.encodeAsHTML()}</b> am <g:formatDate date="${tmpComment.dateCreated}" format="dd.MM.yyyy"/> um <g:formatDate date="${tmpComment.dateCreated}" format="HH:mm" /> Uhr
 							<jsec:hasRole name="Administrator">&nbsp;&bull;&nbsp; <a href="javascript: deletePostOrComment('KommentarForm_${tmpComment.id}');">Kommentar löschen</a></jsec:hasRole>
 							<g:form name="KommentarForm_${tmpComment.id}" controller="kommentar" action="delete" id="${tmpComment.id}" method="post">
 							</g:form>

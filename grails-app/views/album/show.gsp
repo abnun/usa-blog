@@ -30,10 +30,9 @@
 						Um die Bilder zu vergrößern einfach drauf klicken. <g:if test="${albumBilderList.size() > 1}">Nach dem Vergrößern besteht zusätzlich die Möglichkeit eine Art Dia-Show zu starten (dazu muss man den Knopf "Abspielen" klicken).</g:if>
 					</p>
 					<table>
-						<tr>
 						<g:each in="${albumBilderList}" status="i" var="bildInstance">
 							<g:if test="${bildInstance.exists()}">
-								<g:if test="${i > 0 && 5 % i == 2}">
+								<g:if test="${i % 3 == 0}">
 									<tr>
 								</g:if>
 								<td>
@@ -57,8 +56,7 @@
 										</jsec:isLoggedIn>
 									</div>
 								</td>
-								<g:if test="${i > 0 && 5 % i == 2}">
-									</tr>
+								<g:if test="${i > 1 && i % 3 == 0}">
 								</g:if>
 							</g:if>
 						</g:each>

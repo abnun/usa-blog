@@ -30,7 +30,9 @@ postInstanceList.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
 	def list_frontend_archive =
 	{
-		[postInstanceList: Post.findAllWhere(archive: true), postInstanceTotal: Post.count()]
+def postInstanceList = Post.findAllWhere(archive: true)
+postInstanceList.sort {a, b -> b.dateCreated <=> a.dateCreated}
+		[postInstanceList: postInstanceList, postInstanceTotal: postInstanceList.size()]
 	}
 
 	def show =

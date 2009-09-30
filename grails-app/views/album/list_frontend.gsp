@@ -32,10 +32,9 @@
 						Es sind noch keine Fotoalben vorhanden ...
 					</g:else>
 					<table>
-					<tr>
 						<g:each in="${albumInstanceList}" status="i" var="albumInstance">
 							<g:if test="${albumInstance.sichtbar || jsec.principal()}">
-								<g:if test="${i > 0 && 5 % i == 2}">
+								<g:if test="${i % 3 == 0}">
 									<tr>
 								</g:if>
 										<td>
@@ -91,13 +90,11 @@
 												</jsec:isLoggedIn>
 
 											</div>
-										</td>
-								<g:if test="${i > 0 && 5 % i == 2}">
+								<g:if test="${i > 1 && ((i + 1) % 3) == 0}">
 									</tr>
 								</g:if>
 							</g:if>
 						</g:each>
-					</tr>
 					</table>
 					<br />
 					<br />

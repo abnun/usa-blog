@@ -105,7 +105,7 @@ class BildController
 			}
 			if(params.album.id != bildInstance.album.id)
 			{
-				moveBildToAlbumOnDisk(params.album.id)
+				moveBildToAlbumOnDisk(bildInstance, params.album.id)
 			}
 			bildInstance.properties = params
 			if (!bildInstance.hasErrors() && bildInstance.save())
@@ -289,9 +289,97 @@ class BildController
 		}
 	}
 
-	private boolean moveBildtoAlbumOnDisk(String albumId)
+	private boolean moveBildToAlbumOnDisk(Bild bild, String albumId)
 	{
+		boolean isOk = false
 
+		Album tmpAlbum = Album.get(albumId)
+                if(bild && tmpAlbum)
+                {
+			Album bildAlbum = bild.album
+
+			String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
+			
+			String bildAlbumDate = formatDate(date: bildAlbum.dateCreated, format: 'ddMMyyyy')
+			File tmpSourceFolder = ((GrailsApplicationAttributes)grailsAttributes).
+                                                        getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${bildAlbum.toString()}_${bildAlbumDate}").getFile()
+
+                                File tmpTargetFolder = ((GrailsApplicationAttributes)grailsAttributes).
+                                                        getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
+			
+			String tmpCommand1 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+
+String tmpCommand2 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getBigURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+
+String tmpCommand3 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getThumbNailURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+
+String tmpCommand4 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getTempURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+
+println(tmpCommand1)
+println(tmpCommand2)
+println(tmpCommand3)
+println(tmpCommand4)
+
+Process process = null
+
+                                try
+                                {
+                                        process = tmpCommand1.execute()
+                                        //println process.in.text
+                                        process.waitFor()
+                                        Thread.sleep(2000)
+                                        isOk = true
+                                }
+                                catch (Exception e)
+                                {
+                                        e.printStackTrace()
+                                        return false
+                                }
+
+try                                {
+                                        process = tmpCommand2.execute()
+                                        //println process.in.text
+                                        process.waitFor()
+                                        Thread.sleep(2000)
+                                        isOk = true
+                                }
+                                catch (Exception e)
+                                {
+                                        e.printStackTrace()
+                                        return false
+                                }
+
+try                                {
+                                        process = tmpCommand3.execute()
+                                        //println process.in.text
+                                        process.waitFor()
+                                        Thread.sleep(2000)
+                                        isOk = true
+                                }
+                                catch (Exception e)
+                                {
+                                        e.printStackTrace()
+                                        return false
+                                }
+
+try                                {
+                                        process = tmpCommand4.execute()
+                                        //println process.in.text
+                                        process.waitFor()
+                                        Thread.sleep(2000)
+                                        isOk = true
+                                }
+                                catch (Exception e)
+                                {
+                                        e.printStackTrace()
+                                        return false
+                                }
+		}
+else
+{
+return false
+}
+return isOk
 	}
 
 	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile, String rotateDegrees)
