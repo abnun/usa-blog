@@ -48,7 +48,7 @@ class BildController
 				bildInstance.delete(flush: true)
 				flash.message = "Bild '${bildInstance.baseName}' gelöscht."
 
-				if(params.albumId)
+				if (params.albumId)
 				{
 					redirect(controller: 'album', action: 'show', id: params.albumId)
 					return false
@@ -103,10 +103,11 @@ class BildController
 					return
 				}
 			}
-			if(params.album.id != bildInstance.album.id)
+			if (params.album.id != bildInstance.album.id)
 			{
 				moveBildToAlbumOnDisk(bildInstance, params.album.id)
 			}
+			
 			bildInstance.properties = params
 			if (!bildInstance.hasErrors() && bildInstance.save())
 			{
@@ -149,7 +150,7 @@ class BildController
 	def uploadFotos =
 	{
 		println params
-		if(request instanceof MultipartHttpServletRequest)
+		if (request instanceof MultipartHttpServletRequest)
 		{
 			MultipartFile foto = request.getFile('fotos')
 			if (!foto.empty)
@@ -158,10 +159,10 @@ class BildController
 
 				File tmpUploadFolder = null
 
-				if(uploadFolder)
+				if (uploadFolder)
 				{
-					tmpUploadFolder = ((GrailsApplicationAttributes)grailsAttributes).
-							getApplicationContext().getResource( File.separator + MediaUtils.DEFAULT_UPLOADS_FOLDER + File.separator + MediaUtils.DEFAULT_FOLDER_IMAGE + uploadFolder ).getFile()
+					tmpUploadFolder = ((GrailsApplicationAttributes) grailsAttributes).
+							getApplicationContext().getResource(File.separator + MediaUtils.DEFAULT_UPLOADS_FOLDER + File.separator + MediaUtils.DEFAULT_FOLDER_IMAGE + uploadFolder).getFile()
 
 					uploadFolder = getUploadPath(tmpUploadFolder).getAbsolutePath()
 					println uploadFolder
@@ -174,22 +175,22 @@ class BildController
 				File newFile = new File(newFilePath)
 
 				foto.transferTo(newFile)
-				Thread.sleep(2000) 
+				Thread.sleep(2000)
 
 				String rotateDegrees = params.rotate
 
 				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild, rotateDegrees)
 
-				if(isOk && newFile.exists() && newFile.size() > 0)
+				if (isOk && newFile.exists() && newFile.size() > 0)
 				{
 					Bild newBild = new Bild(baseName: params['Filename'], album: Album.get(params.album.id))
 					Bild existingBild = Bild.findByBaseName(params['Filename'])
-					if(existingBild)
+					if (existingBild)
 					{
 						newBild = existingBild
 					}
 
-					if(newBild.save(flush: true))
+					if (newBild.save(flush: true))
 					{
 						println("Foto '${newBild.getURL()}' erfolgreich gespeichert.")
 					}
@@ -239,18 +240,18 @@ class BildController
 	{
 		println("params -> $params")
 
-		if(params.id)
+		if (params.id)
 		{
 			Bild tmpBild = Bild.get(params.id)
 
-			if(tmpBild && params.rotate)
+			if (tmpBild && params.rotate)
 			{
 				Album tmpAlbum = tmpBild.album
 
 				String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
 
-				File tmpUploadFolder = ((GrailsApplicationAttributes)grailsAttributes).
-							getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
+				File tmpUploadFolder = ((GrailsApplicationAttributes) grailsAttributes).
+						getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
 				String uploadFolder = getUploadPath(tmpUploadFolder).getAbsolutePath()
 				println uploadFolder
 				String newFilePath = "${uploadFolder}${File.separator}${tmpBild.getTempURL()}"
@@ -258,7 +259,7 @@ class BildController
 
 				boolean isOk = processImg(newFilePath, uploadFolder, tmpUploadFolder, tmpBild, rotateDegrees)
 
-				if(isOk)
+				if (isOk)
 				{
 					flash.message = "Bild erfolgreich gedreht."
 					redirect(action: 'edit', id: tmpBild.id)
@@ -276,7 +277,7 @@ class BildController
 	{
 		println("OS -> ${System.getProperty("os.name")}")
 
-		if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+		if (GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 		{
 			println "PATH -> ${System.getenv().get("Path")}"
 			println "USER -> ${System.getenv().get("USERNAME")}"
@@ -294,92 +295,91 @@ class BildController
 		boolean isOk = false
 
 		Album tmpAlbum = Album.get(albumId)
-                if(bild && tmpAlbum)
-                {
+		if (bild && tmpAlbum)
+		{
 			Album bildAlbum = bild.album
 
 			String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
-			
-			String bildAlbumDate = formatDate(date: bildAlbum.dateCreated, format: 'ddMMyyyy')
-			File tmpSourceFolder = ((GrailsApplicationAttributes)grailsAttributes).
-                                                        getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${bildAlbum.toString()}_${bildAlbumDate}").getFile()
 
-                                File tmpTargetFolder = ((GrailsApplicationAttributes)grailsAttributes).
-                                                        getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
-			
+			String bildAlbumDate = formatDate(date: bildAlbum.dateCreated, format: 'ddMMyyyy')
+			File tmpSourceFolder = ((GrailsApplicationAttributes) grailsAttributes).
+					getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${bildAlbum.toString()}_${bildAlbumDate}").getFile()
+
+			File tmpTargetFolder = ((GrailsApplicationAttributes) grailsAttributes).
+					getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile()
+
 			String tmpCommand1 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
 
-String tmpCommand2 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getBigURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+			String tmpCommand2 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getBigURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
 
-String tmpCommand3 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getThumbNailURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+			String tmpCommand3 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getThumbNailURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
 
-String tmpCommand4 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getTempURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
+			String tmpCommand4 = "cp ${tmpSourceFolder.getAbsolutePath()}${File.separator}${bild.getTempURL()} ${tmpTargetFolder.getAbsolutePath()}${File.separator}"
 
-println(tmpCommand1)
-println(tmpCommand2)
-println(tmpCommand3)
-println(tmpCommand4)
+			println(tmpCommand1)
+			println(tmpCommand2)
+			println(tmpCommand3)
+			println(tmpCommand4)
 
-Process process = null
+			Process process = null
 
-                                try
-                                {
-                                        process = tmpCommand1.execute()
-                                        //println process.in.text
-                                        process.waitFor()
-                                        Thread.sleep(2000)
-                                        isOk = true
-                                }
-                                catch (Exception e)
-                                {
-                                        e.printStackTrace()
-                                        return false
-                                }
+			try
+			{
+				process = tmpCommand1.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
+				isOk = true
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace()
+				return false
+			}
 
-try                                {
-                                        process = tmpCommand2.execute()
-                                        //println process.in.text
-                                        process.waitFor()
-                                        Thread.sleep(2000)
-                                        isOk = true
-                                }
-                                catch (Exception e)
-                                {
-                                        e.printStackTrace()
-                                        return false
-                                }
+			try
+			{
+				process = tmpCommand2.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
+				isOk = true
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace()
+				return false
+			}
 
-try                                {
-                                        process = tmpCommand3.execute()
-                                        //println process.in.text
-                                        process.waitFor()
-                                        Thread.sleep(2000)
-                                        isOk = true
-                                }
-                                catch (Exception e)
-                                {
-                                        e.printStackTrace()
-                                        return false
-                                }
+			try
+			{
+				process = tmpCommand3.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
+				isOk = true
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace()
+				return false
+			}
 
-try                                {
-                                        process = tmpCommand4.execute()
-                                        //println process.in.text
-                                        process.waitFor()
-                                        Thread.sleep(2000)
-                                        isOk = true
-                                }
-                                catch (Exception e)
-                                {
-                                        e.printStackTrace()
-                                        return false
-                                }
+			try
+			{
+				process = tmpCommand4.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
+				isOk = true
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace()
+				return false
+			}
 		}
-else
-{
-return false
-}
-return isOk
+		return isOk
 	}
 
 	private boolean processImg(String fileName, String uploadFolder, File tmpUploadFolder, Bild targetFile, String rotateDegrees)
@@ -388,103 +388,103 @@ return isOk
 
 		printSysAndEnvVariables()
 
-		if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+		if (GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
 		{
 			original = "\"${original}\""
 		}
 
 		boolean isOk = false
-//		def t = Thread.start
-//		{
+		//		def t = Thread.start
+		//		{
 
-			final String uploadPathBig = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
-			final String uploadPathNormal = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getURL()}"
-			final String uploadPathThumbNail = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
+		final String uploadPathBig = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getBigURL()}"
+		final String uploadPathNormal = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getURL()}"
+		final String uploadPathThumbNail = "${getUploadPath(tmpUploadFolder).getAbsolutePath()}${File.separator}${targetFile.getThumbNailURL()}"
 
-			if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
-			{
-				uploadPathBig = "\"${uploadPathBig}\""
-				uploadPathNormal = "\"${uploadPathNormal}\""
-				uploadPathThumbNail = "\"${uploadPathThumbNail}\""
-			}
+		if (GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+		{
+			uploadPathBig = "\"${uploadPathBig}\""
+			uploadPathNormal = "\"${uploadPathNormal}\""
+			uploadPathThumbNail = "\"${uploadPathThumbNail}\""
+		}
 
-			String cmdRotate = ""
+		String cmdRotate = ""
 
-			Process process = null
+		Process process = null
 
-			File originalFile = new File(original)
-			if(rotateDegrees && originalFile.exists())
-			{
-				cmdRotate = "convert -rotate ${rotateDegrees} ${original} ${uploadPathNormal}"
-				//cmdRotate = "convert -rotate \"${rotateDegrees}\" ${original} ${uploadPathNormal}"
-				println cmdRotate
-				try
-				{
-					process = cmdRotate.execute()
-					//println process.in.text
-					process.waitFor()
-					Thread.sleep(2000) 
-					isOk = true
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace()
-					return false
-				}
-			}
-			else
-			{
-				cmdRotate = "cp ${original} ${uploadPathNormal}"
-				if(GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
-				{
-					cmdRotate = "xcopy ${original} ${uploadPathNormal} /Y /C /R /V /-I"
-				}
-
-				println cmdRotate
-				try
-				{
-					process = cmdRotate.execute()
-					//println process.in.text
-					process.waitFor()
-					Thread.sleep(2000)
-					isOk = true
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace()
-					return false
-				}
-			}
-
-			String cmdThumbNail = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
+		File originalFile = new File(original)
+		if (rotateDegrees && originalFile.exists())
+		{
+			cmdRotate = "convert -rotate ${rotateDegrees} ${original} ${uploadPathNormal}"
+			//cmdRotate = "convert -rotate \"${rotateDegrees}\" ${original} ${uploadPathNormal}"
+			println cmdRotate
 			try
 			{
-				process = cmdThumbNail.execute()
+				process = cmdRotate.execute()
+				//println process.in.text
 				process.waitFor()
+				Thread.sleep(2000)
 				isOk = true
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				e.printStackTrace()
 				return false
 			}
+		}
+		else
+		{
+			cmdRotate = "cp ${original} ${uploadPathNormal}"
+			if (GrailsUtil.environment == "development" && !System.getProperty("os.name").contains("Mac"))
+			{
+				cmdRotate = "xcopy ${original} ${uploadPathNormal} /Y /C /R /V /-I"
+			}
 
-			String cmdBig = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
+			println cmdRotate
 			try
 			{
-				Process processMain = cmdBig.execute()
-				processMain.waitFor()
+				process = cmdRotate.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
 				isOk = true
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				e.printStackTrace()
 				return false
 			}
+		}
 
-			//             def waterMarkCmd = ["cmd /c composite -compose atop watermark.png", 'imgs/main_' + fileName, 'imgs/wm_' + fileName]
-			//             waterMarkCmd.join(" ").execute()
-//		}
+		String cmdThumbNail = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(150, 140), uploadPathThumbNail)
+		try
+		{
+			process = cmdThumbNail.execute()
+			process.waitFor()
+			isOk = true
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace()
+			return false
+		}
+
+		String cmdBig = createCmd(uploadPathNormal, MediaUtils.THUMBNAIL, createDimentions(400, 0), uploadPathBig)
+		try
+		{
+			Process processMain = cmdBig.execute()
+			processMain.waitFor()
+			isOk = true
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace()
+			return false
+		}
+
+		//             def waterMarkCmd = ["cmd /c composite -compose atop watermark.png", 'imgs/main_' + fileName, 'imgs/wm_' + fileName]
+		//             waterMarkCmd.join(" ").execute()
+		//		}
 		return isOk
 	}
 
@@ -505,12 +505,12 @@ return isOk
 			 return fileExtension;
 		 }*/
 
-	private String createCmd(String inpath,String action,String options,String outpath)
+	private String createCmd(String inpath, String action, String options, String outpath)
 	{
 		//@todo Need os specific code here... Remove c for Linux.....
 		def cmd = ['cmd', '/c', 'convert', inpath, action, options, outpath]
 
-		if(GrailsUtil.environment == "production" || System.getProperty("os.name").contains("Mac"))
+		if (GrailsUtil.environment == "production" || System.getProperty("os.name").contains("Mac"))
 		{
 			cmd = ['convert', inpath, action, options, outpath]
 		}
@@ -539,7 +539,7 @@ return isOk
 
 	private File getUploadPath(File tmpUploadFolder)
 	{
-		if(!tmpUploadFolder.exists())
+		if (!tmpUploadFolder.exists())
 		{
 			tmpUploadFolder.mkdir()
 		}

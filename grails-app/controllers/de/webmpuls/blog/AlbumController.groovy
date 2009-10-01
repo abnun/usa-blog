@@ -1,5 +1,8 @@
 package de.webmpuls.blog
 
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
+import de.webmpuls.blog.Media.MediaUtils
+
 class AlbumController
 {
 	static navigation = [
@@ -99,6 +102,16 @@ class AlbumController
 					return
 				}
 			}
+
+			if(params.name != albumInstance.name)
+			{
+				if(!renameAlbumDirectory(albumInstance, params.name))
+				{
+					flash.message = "Der Name des Albums darf nur Buchstaben, Zahlen und Unterstriche enthalten!"
+					render(view: 'edit', model: [albumInstance: albumInstance])
+				}
+			}
+
 			albumInstance.properties = params
 			if (!albumInstance.hasErrors() && albumInstance.save())
 			{
@@ -136,5 +149,44 @@ class AlbumController
 		{
 			render(view: 'create', model: [albumInstance: albumInstance])
 		}
+	}
+
+	private boolean renameAlbumDirectory(Album tmpAlbum, String newAlbumName)
+	{
+		boolean isOk = false
+
+		boolean newAlbumNameIsValid = newAlbumName == /\w+/
+		if (album && newAlbumNameIsValid)
+		{
+
+			String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
+
+			String bildAlbumDate = formatDate(date: bildAlbum.dateCreated, format: 'ddMMyyyy')
+			String tmpSourceFolderString = ((GrailsApplicationAttributes) grailsAttributes).
+					getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${bildAlbumDate}").getFile().getAbsolutePath()
+
+			String tmpTargetFolderString = tmpSourceFolderString.replaceFirst(tmpAlbum.toString(), newAlbumName)
+
+			String tmpCommand1 = "mv ${tmpSourceFolderString} ${tmpTargetFolderString}"
+
+			println(tmpCommand1)
+
+			Process process = null
+
+			try
+			{
+				process = tmpCommand1.execute()
+				//println process.in.text
+				process.waitFor()
+				Thread.sleep(2000)
+				isOk = true
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace()
+				return false
+			}
+		}
+		return isOk
 	}
 }
