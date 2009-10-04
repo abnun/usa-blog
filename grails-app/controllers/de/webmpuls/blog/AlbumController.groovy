@@ -88,6 +88,7 @@ class AlbumController
 
 	def update =
 	{
+		println("params -> $params")
 		def albumInstance = Album.get(params.id)
 		if (albumInstance)
 		{
@@ -155,7 +156,7 @@ class AlbumController
 	{
 		boolean isOk = false
 
-		boolean newAlbumNameIsValid = newAlbumName == /\w+/
+		boolean newAlbumNameIsValid = (newAlbumName == /\w+/)
 		if (tmpAlbum && newAlbumNameIsValid)
 		{
 
