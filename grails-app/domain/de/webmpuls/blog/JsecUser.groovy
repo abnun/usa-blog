@@ -1,7 +1,5 @@
 package de.webmpuls.blog
 
-enum Sex { MALE, FEMALE }
-
 class JsecUser {
     String username
     String passwordHash
