@@ -104,6 +104,8 @@ class AlbumController
 				}
 			}
 
+			println(albumInstance.name)
+
 			if(params.name != albumInstance.name)
 			{
 				if(!renameAlbumDirectory(albumInstance, params.name))
