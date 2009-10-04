@@ -156,14 +156,13 @@ class AlbumController
 		boolean isOk = false
 
 		boolean newAlbumNameIsValid = newAlbumName == /\w+/
-		if (album && newAlbumNameIsValid)
+		if (tmpAlbum && newAlbumNameIsValid)
 		{
 
 			String albumDate = formatDate(date: tmpAlbum.dateCreated, format: 'ddMMyyyy')
 
-			String bildAlbumDate = formatDate(date: bildAlbum.dateCreated, format: 'ddMMyyyy')
 			String tmpSourceFolderString = ((GrailsApplicationAttributes) grailsAttributes).
-					getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${bildAlbumDate}").getFile().getAbsolutePath()
+					getApplicationContext().getResource("${File.separator}${MediaUtils.DEFAULT_UPLOADS_FOLDER}${File.separator}${MediaUtils.DEFAULT_FOLDER_IMAGE}${File.separator}${MediaUtils.DEFAULT_FOLDER}_${tmpAlbum.toString()}_${albumDate}").getFile().getAbsolutePath()
 
 			String tmpTargetFolderString = tmpSourceFolderString.replaceFirst(tmpAlbum.toString(), newAlbumName)
 
