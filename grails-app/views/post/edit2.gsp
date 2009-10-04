@@ -69,7 +69,7 @@
                                 </td>
                             </tr>--}% 
                         
-                            <input type="hidden" name="verfasser.id" value="${JsecUser.findByUsername(jsec.principal())?.id}" />
+                            <input type="hidden" name="verfasser.id" value="${JsecUser.findByUsername(jsec.principal().toString())?.id}" />
                         
                             <!--<tr class="prop">
                                 <td valign="top" class="name">

@@ -3,10 +3,10 @@
 <table>
 	<tr>
 		<td>
-			<g:if test="${JsecUser.findByUsername(jsec.principal())?.sex == Sex.MALE}">
+			<g:if test="${JsecUser.findByUsername(jsec.principal().toString())?.sex == Sex.MALE}">
 				<img src="${resource(dir: 'images', file: 'images_male1.jpg')}" alt="icon male"/>
 			</g:if>
-			<g:elseif test="${JsecUser.findByUsername(jsec.principal())?.sex == Sex.FEMALE}">
+			<g:elseif test="${JsecUser.findByUsername(jsec.principal().toString())?.sex == Sex.FEMALE}">
 				<img src="${resource(dir: 'images', file: 'images_female1.jpg')}" alt="icon female"/>
 			</g:elseif>
 		</td>
