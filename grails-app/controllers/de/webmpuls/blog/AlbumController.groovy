@@ -97,7 +97,7 @@ class AlbumController
 				def version = params.version.toLong()
 				if (albumInstance.version > version)
 				{
-
+					println("Trying to rename album directory")
 					albumInstance.errors.rejectValue("version", "album.optimistic.locking.failure", "Another user has updated this Album while you were editing.")
 					render(view: 'edit', model: [albumInstance: albumInstance])
 					return
